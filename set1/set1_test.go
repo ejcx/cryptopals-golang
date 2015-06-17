@@ -21,18 +21,8 @@ func TestXOREnc(t *testing.T) {
 func TestXORChar(t *testing.T) {
 	ct := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 	for i := 0 ; i < 255; i++ {
-		r, e :=	set1.XORChar(ct, byte(i))
-		if e != nil {
-			t.Logf("ERROR in XORChar %s", e)
-			t.Fail()
-		}
-		//t.Log(r)
-		//continue
-		re, err := regexp.Compile("^[a-zA-Z'\\s]+$")
-		if err != nil {
-			t.Logf("ERROR Making RE %s", err)
-			t.Fail()
-		}
+		r, _ :=	set1.XORChar(ct, byte(i))
+		re, _ := regexp.Compile("^[a-zA-Z'\\s]+$")
 		if re.MatchString(r) {
 			t.Log(r)
 			return
