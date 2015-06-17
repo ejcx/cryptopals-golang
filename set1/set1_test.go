@@ -1,7 +1,9 @@
 package set1_test
 import (
+	"bufio"
+	"os"
 	"regexp"
-	"set1"
+	"cryptopals-go/set1"
 	"testing"
 )
 func TestHB64Test(t *testing.T) {
@@ -18,15 +20,41 @@ func TestXOREnc(t *testing.T) {
 		t.Fail()
 	}
 }
+func looksenglish(s string) bool {
+	re, _ := regexp.Compile("^[a-zA-Z'\\s!.\"?]+$")
+	return re.MatchString(s)
+}
 func TestXORChar(t *testing.T) {
 	ct := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 	for i := 0 ; i < 255; i++ {
 		r, _ :=	set1.XORChar(ct, byte(i))
-		re, _ := regexp.Compile("^[a-zA-Z'\\s]+$")
-		if re.MatchString(r) {
+		if looksenglish(r) {
 			t.Log(r)
 			return
 		}
+	}
+	t.Fail()
+}
+//Challenge 4
+//Brute force using the stuff from challenge 3
+func TestFindXORdStr(t *testing.T){
+	f, err := os.Open("4.txt")
+	if err != nil {
+		t.Fail()
+	}
+	br := bufio.NewReader(f)
+	for line, p, err := br.ReadLine();; {
+		if p || err != nil {
+			break
+		}
+		for i:= 0 ; i < 255 ; i++ {
+			s, _ :=	set1.XORChar(string(line), byte(i))
+			if looksenglish(s){
+				t.Logf("\nString: %sChar: %d", s, i)
+				return
+			}
+		}
+		line, p, err = br.ReadLine();
 	}
 	t.Fail()
 }
