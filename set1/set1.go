@@ -49,3 +49,14 @@ func XORChar(ct string, key byte) (string, error) {
 	}
 	return string(ctb), nil
 }
+
+//Challenge 5
+//Repeated XOR Cipher
+func MultiTimePad(ct []byte, key []byte) []byte {
+	ind := 0
+	for i := range ct {
+		ct[i] ^= key[ind]
+		ind = (ind+1)%len(key)
+	}
+	return ct
+}
